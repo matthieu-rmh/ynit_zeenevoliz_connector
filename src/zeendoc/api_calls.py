@@ -2,9 +2,29 @@ import os
 import json
 from zeep import Client
 
-def login():
+def login(wsdl_client, login_credentials):
 
-# Get the directory of the current Python script
+    # login **kwargs
+    login_kwargs = {
+            "Login": login_credentials["login"],
+            "CPassword": login_credentials["cpassword"],
+            "Password": login_credentials["password"],
+            "Access_token": login_credentials["access_token"]
+            }
+
+    response = make_zeendoc_soap_request(wsdl_client.service.login, **login_kwargs)
+    print(response)
+
+
+
+def make_zeendoc_soap_request(method, **body_request):
+    return method(**body_request)
+
+def get_evoliz_data():
+    print("evoliz data")
+
+def test():
+    # Get the directory of the current Python script
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the path to config.json in the parent directory
@@ -14,21 +34,11 @@ def login():
     with open(config_path, "r") as file:
         config = json.load(file)
 
-    # print(config)
-
-    # wsdl = 'http://www.soapclient.com/xml/soapresponder.wsdl'
-    wsdl = "https://armoires.zeendoc.com/lrc/ws/3_1/wsdl.php?WSDL"
+    wsdl = config["wsdl"]
     print(wsdl)
     client = Client(wsdl=wsdl)
-    response = client.service.login(
-            Login=config["login"],
-            CPassword=config["cpassword"],
-            Password=config["password"],
-            Access_token=config["access_token"]
-        )
 
-    print(response)
+    login(client, config)
 
-def test():
     print("inside zeendoc api calls")
 
