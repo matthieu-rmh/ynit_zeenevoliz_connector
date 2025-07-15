@@ -13,7 +13,7 @@ def login(wsdl_client, login_credentials):
             }
 
     response = make_zeendoc_soap_request(wsdl_client.service.login, **login_kwargs)
-    print(response)
+    return json.loads(response)['Cookie']
 
 
 
@@ -38,7 +38,8 @@ def test():
     print(wsdl)
     client = Client(wsdl=wsdl)
 
-    login(client, config)
+    cookie = login(client, config)
+    print(f"cookie= {cookie}")
 
     print("inside zeendoc api calls")
 
