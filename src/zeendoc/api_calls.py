@@ -15,7 +15,33 @@ def login(wsdl_client, login_credentials):
     response = make_zeendoc_soap_request(wsdl_client.service.login, **login_kwargs)
     return json.loads(response)['Cookie']
 
+def search_evoliz_exportable_docs(wsdl_client):
 
+    search_kwargs = {
+            "Coll_Id": "coll_11",
+            "Saved_Query_Name": "Gestion comptable|Facture(s) exportable(s) (EVOLIZ)",
+            "Saved_Query_Id": "",
+            "StrictMode": "",
+            "Query_Operator": "",
+            "Order_Col": "",
+            "Wanted_Columns": "",
+            "Make_Url_Independant_From_WebClient_IP": "",
+            "Access_token": "",
+            "Value_1": "",
+            "Nb_Results": "",
+            "From": "",
+            "Order": "",
+            "IndexList": {
+                "Index": {
+                    "Id": "",
+                    "Value": "",
+                    "Label": ""
+                    }
+                }
+            }
+
+    response = json.loads(make_zeendoc_soap_request(wsdl_client.service.searchDoc, **search_kwargs))
+    print(str(response))
 
 def make_zeendoc_soap_request(method, **body_request):
     return method(**body_request)
@@ -40,6 +66,8 @@ def test():
 
     cookie = login(client, config)
     print(f"cookie= {cookie}")
+
+    search_evoliz_exportable_docs(client)
 
     print("inside zeendoc api calls")
 
