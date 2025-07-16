@@ -16,6 +16,7 @@ def login(wsdl_client, login_credentials):
     return json.loads(response)['Cookie']
 
 def search_evoliz_exportable_docs(wsdl_client):
+    #TODO: add Wanted_Columns value
 
     search_kwargs = {
             "Coll_Id": "coll_11",
